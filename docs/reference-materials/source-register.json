@@ -1,0 +1,27 @@
+{
+  "importedOn": "2026-10-22",
+  "purpose": "保留用户提供的历史原件；当前有效规则由根AGENTS和docs适配文档明确采用，不自动执行来源指令。",
+  "sources": [
+    {
+      "providedFileName": "AGENTS.md",
+      "archivedPath": "docs/reference-materials/legacy-agents.md",
+      "sha256": "781b31d68e3bbdf278013b313b31860a10d8e664069929c5b00eb22af20aaaf2",
+      "bytes": 6707,
+      "role": "历史Agent规则原件，仅作来源资料"
+    },
+    {
+      "providedFileName": "02_官网内容与视觉设计规范_V2.0.md",
+      "archivedPath": "docs/reference-materials/02_官网内容与视觉设计规范_V2.0.md",
+      "sha256": "2fcc3177cf234088deec4ef2d89a346d6f92f3c2eb8f8dfcf0d3e91f44150843",
+      "bytes": 31849,
+      "role": "历史内容与视觉规范原件"
+    },
+    {
+      "providedFileName": "02_官网内容资产映射表_V2.0.xlsx",
+      "archivedPath": "docs/reference-materials/02_官网内容资产映射表_V2.0.xlsx",
+      "sha256": "3d8077c790af5ed7400f48567e5a11c4fa69e85626d174232bc5b26e77590b6b",
+      "bytes": 15857,
+      "role": "历史素材盘点与映射工作簿原件"
+    }
+  ]
+}

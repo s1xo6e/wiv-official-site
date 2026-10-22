@@ -1,100 +1,74 @@
-# vinext-starter
+# 西部智车官网
 
-A clean full-stack starter running on
-[vinext](https://github.com/cloudflare/vinext), with optional Cloudflare D1 and
-Drizzle support.
+面向高校与科研院所，展示 wivSPACE 产品、研发测试方案和真实案例，并承接咨询。当前代码为早期单页 Demo，接近生产的旧代码尚未恢复。
 
-## Prerequisites
+## 项目文档
 
-- Node.js `>=22.13.0`
+日常只维护四份文件：
 
-## Quick Start
+- 本 README：启动方式、最新进度和下一步。
+- [PRD](docs/PRD.md)：受众、需求范围、业务/视觉要求、任务与验收。
+- [技术设计](docs/TECH_DESIGN.md)：架构、实现、配置、验证和换机恢复。
+- [AGENTS](AGENTS.md)：简短的 AI 协作规则。
+
+每类信息只在对应文件维护。用户提供的原件和资产数据保留作参考；旧生成文档已收进[历史快照](docs/archive/docs-before-simplification-2026-10-22.zip)，不再日常维护。
+
+## 启动
+
+需要 Node.js >=22.13.0。首次安装：
 
 ```bash
-npm install
+npm ci
 npm run dev
-npm run build
 ```
 
-This starter does not use `wrangler.jsonc`.
+本机访问 <http://localhost:3000/>；内网协作使用：
 
-## Included Shape
-
-- edit site code under `app/`
-- `.openai/hosting.json` declares optional Sites D1 and R2 bindings
-- `vite.config.ts` simulates declared bindings for local development
-- `db/schema.ts` starts intentionally empty
-- `examples/d1/` contains an optional D1 example surface
-- `drizzle.config.ts` supports local migration generation when needed
-
-## Workspace Auth Headers
-
-Signed-in visitors receive both `oai-authenticated-user-id` and `oai-authenticated-user-email`. Private Sites require every visitor to sign in; public Sites may also have anonymous visitors, for whom neither header is present.
-
-The user ID is stable for the same user on the same Site and different across Sites. Email and name are intended for display or contact purposes.
-
-SIWC-authenticated workspace sites may also receive
-`oai-authenticated-user-full-name` when the user's SIWC profile has a non-empty
-`name` claim. The full-name value is percent-encoded UTF-8 and is accompanied by
-`oai-authenticated-user-full-name-encoding: percent-encoded-utf-8`.
-
-Treat the full name as optional and fall back to email when it is absent:
-
-```tsx
-import { headers } from "next/headers";
-
-export default async function Home() {
-  const requestHeaders = await headers();
-  const userId = requestHeaders.get("oai-authenticated-user-id");
-  const email = requestHeaders.get("oai-authenticated-user-email");
-  const encodedFullName = requestHeaders.get("oai-authenticated-user-full-name");
-  const fullName =
-    encodedFullName &&
-    requestHeaders.get("oai-authenticated-user-full-name-encoding") ===
-      "percent-encoded-utf-8"
-      ? decodeURIComponent(encodedFullName)
-      : null;
-
-  const displayName = fullName ?? email;
-  // ...
-}
+```bash
+npm run dev:lan
 ```
 
-## Optional Dispatch-Owned ChatGPT Sign-In
+同一局域网设备访问启动日志中的 Network 地址。2026-10-22 此电脑地址为 <http://192.168.1.86:3000/>，换网络后可能变化；端口以日志为准。电脑和开发进程需保持运行，第二台设备可达性仍待实测。
 
-Import the ready-to-use helpers from `app/chatgpt-auth.ts` when the site needs
-optional or required ChatGPT sign-in:
+## 最新接续状态
 
-- Use `getChatGPTUser()` for optional signed-in UI.
-- Use `requireChatGPTUser(returnTo)` for server-rendered pages that should send
-  anonymous visitors through Sign in with ChatGPT.
-- Use `chatGPTSignInPath(returnTo)` and `chatGPTSignOutPath(returnTo)` for
-  browser links or actions.
-- Pass a same-origin relative `returnTo` path for the destination after sign-in
-  or sign-out. The helper validates and safely encodes it.
-- Mark protected pages with `export const dynamic = "force-dynamic"` because
-  they depend on per-request identity headers.
+更新：2026-10-22。以下是工作快照，不代替实时 Git 核验。
 
-Dispatch owns `/signin-with-chatgpt`, `/signout-with-chatgpt`, `/callback`, the
-OAuth cookies, and identity header injection. Do not implement app routes for
-those reserved paths. Routes that do not import and call the helper remain
-anonymous-compatible.
+- 最近完成：三份历史资料接入、资产核对、四份日常文档，以及WIV-001的官网冒烟测试和Cloudflare类型修复。
+- 下一步：按WIV-002/003打磨页头与首屏，一轮一个主要板块。
+- 质量检查：`npm run verify` 通过，包含类型生成/检查、Lint、文档检查、构建和全部9项测试。Lint无错误，保留9条现有图片性能提醒。
+- 跨设备：2026-10-22本机和内网地址均返回HTTP 200，用户确认另一设备可正常打开。
+- 已知页面问题：窄屏统计条遮挡、移动导航缺失、表单未接通、内部制作文案、旧体系图产品归属过时。按PRD对应任务处理。
+- 保存分支与交接入口：`codex/wiv-001-foundation`；默认 `main` 仍保留原Demo。本轮成果从该任务分支接续，当前提交及远端同步状态用 `repo:status` / `repo:check` 实时核验。
+- 来源缺项：原信息架构V1.1、完整素材包及近生产旧代码可继续找回；先独立保存和比对，避免覆盖当前工作。
 
-SIWC establishes identity only; it does not prove workspace membership. Use the
-Sites hosting platform's access policy controls for workspace-wide restrictions,
-or enforce explicit server-side membership or allowlist checks.
+```bash
+npm run docs:check
+npm run verify
+npm run repo:status
+npm run repo:check
+```
 
-Use SIWC for account pages, user-specific dashboards, saved records, and write
-actions tied to the current ChatGPT user. Leave public content anonymous.
+`docs:check` 核对原件、资产和文档；`repo:status` 只看本地；`repo:check` 实时核验当前上游分支。提交/推送依据当轮授权执行，成功后再记录远端结果。换机前另做独立 clone 恢复演练，详见技术设计。
 
-## Useful Commands
+换设备获取本轮版本时，显式选择分支，避免只下载默认分支上的早期Demo：
 
-- `npm run dev`: start local development
-- `npm run build`: verify the vinext build output
-- `npm test`: build the starter and verify its rendered loading skeleton
-- `npm run db:generate`: generate Drizzle migrations after schema changes
+```bash
+git clone --branch codex/wiv-001-foundation https://github.com/s1xo6e/wiv-official-site.git
+cd wiv-official-site
+npm ci
+npm run verify
+```
 
-## Learn More
+## 分板块新对话
 
-- [vinext Documentation](https://github.com/cloudflare/vinext)
-- [Drizzle D1 Guide](https://orm.drizzle.team/docs/get-started/d1-new)
+可直接这样开始，无需依赖本聊天历史：
+
+```text
+继续 /Users/iyoul/Desktop/wiv-official-site，只处理 PRD 中的【任务ID/板块】。
+读取 AGENTS.md、README最新状态和PRD对应要求；按需查看技术设计与原始素材。
+先核对并保留已有修改，实现本轮范围、完成相关验证，更新任务和最新状态。
+收工报告分支/提交、未提交/未推送内容；保存和发布按本次会话的明确授权执行。
+```
+
+每轮收工只需更新PRD的任务状态和本页最新接续信息；需求或架构有变化时才修改对应正文。正式发布与本地预览、Git同步分别验收。

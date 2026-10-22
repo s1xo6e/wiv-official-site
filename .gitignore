@@ -39,3 +39,8 @@ yarn-error.log*
 /outputs/
 /work/
 /.tmp/
+
+# Local source-material intake; curated documents belong in docs/.
+/project-inputs/*
+!/project-inputs/README.md
+*.tsbuildinfo

@@ -1,0 +1,4 @@
+# Preserve historical sources byte-for-byte, including Markdown hard breaks.
+docs/reference-materials/** -whitespace
+# Keep official generated runtime declarations unchanged and fold their diff.
+types/cloudflare-runtime.d.ts -whitespace linguist-generated=true

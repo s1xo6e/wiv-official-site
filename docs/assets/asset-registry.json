@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "snapshotDate": "2026-10-22",
+  "snapshotDate": "2026-10-26",
   "sourceWorkbook": "docs/reference-materials/02_官网内容资产映射表_V2.0.xlsx",
   "sourceSha256": "3d8077c790af5ed7400f48567e5a11c4fa69e85626d174232bc5b26e77590b6b",
   "sourcePathBase": "源工作簿中的 sourcePath/sourceAssetPath 相对于原 assets 根目录，不是当前 public/assets 的可访问路径。",
@@ -30,11 +30,11 @@
       "待确认": 38,
       "不可公开": 1
     },
-    "currentMediaCount": 18,
+    "currentMediaCount": 34,
     "matchTypeCounts": {
-      "not-found": 21,
-      "alias-candidate": 5,
-      "exact-basename": 13
+      "not-found": 16,
+      "alias-candidate": 7,
+      "exact-basename": 16
     },
     "pageMappingCount": 15,
     "gapCount": 9,
@@ -45,13 +45,8 @@
       "ABOUT-003",
       "CONTACT-001",
       "CONTACT-002",
-      "XIL-CHS",
-      "XIL-CPT",
-      "XIL-DIL",
+      "ARCH-OLD",
       "XIL-TD",
-      "RC-ADS",
-      "RC-VT",
-      "RC-EM",
       "VIDEO-RC",
       "CASE-002",
       "CASE-003",
@@ -370,17 +365,14 @@
       "handling": "含数据底座与旧产品归属，需重绘",
       "sourceRow": 18,
       "sourceRange": "'素材盘点'!A18:J18",
-      "localPath": "public/assets/products/architecture.png",
-      "matchType": "alias-candidate",
-      "localDimensions": [
-        1800,
-        893
-      ],
-      "localBytes": 907561,
-      "localSha256": "e786bd58fb2238bd9cbccc9728d651a06417268abe17f8c7e4239d1d0503fa06",
-      "geometryDiffersFromSource": true,
+      "localPath": null,
+      "matchType": "not-found",
+      "localDimensions": null,
+      "localBytes": null,
+      "localSha256": null,
+      "geometryDiffersFromSource": null,
       "implementationUse": "prohibited",
-      "localObservation": "当前图中 SRIF 在环归在 X-IL、飞车模块归在 REAL CAR，产品归属已过时；目视未见 CORE 字样，不将源表的含数据底座说明当作当前图事实。"
+      "localObservation": "历史已核对图中SRIF归属过时，目视未见CORE字样；2026-10-26本地旧图已撤下，不保留可访问网页文件，来源事实与不可公开状态仍保留。"
     },
     {
       "assetId": "XIL-VEH",
@@ -398,13 +390,21 @@
       "localPath": "public/assets/products/xil/IMG-XIL-整车在环模块.png",
       "matchType": "exact-basename",
       "localDimensions": [
-        1800,
-        1012
+        1695,
+        928
       ],
-      "localBytes": 2235183,
-      "localSha256": "7b2df2c3ded9a4e2bb156582c53bb4b376e48d7fd5badd3c1b124d8ad7d120d8",
+      "localBytes": 1809498,
+      "localSha256": "914983c203d3a678b7c506c39db99f206f362eef08e6ccc2d897d04a18022ae6",
       "geometryDiffersFromSource": true,
-      "implementationUse": "requires-publication-confirmation"
+      "implementationUse": "requires-publication-confirmation",
+      "webDerivative": {
+        "path": "public/assets/products/web/xil-vehicle.webp",
+        "width": 1400,
+        "height": 766,
+        "bytes": 92710,
+        "sha256": "b51cec1a5c94cd3147e7f6bf9632b7176db9bc5f7eb294a92dc1416c30d6c3c1",
+        "derivedFrom": "public/assets/products/xil/IMG-XIL-整车在环模块.png"
+      }
     },
     {
       "assetId": "XIL-ADS",
@@ -419,16 +419,24 @@
       "handling": "高质量首选",
       "sourceRow": 20,
       "sourceRange": "'素材盘点'!A20:J20",
-      "localPath": "public/assets/products/xil/IMG-XIL-智驾在环模块.JPG",
-      "matchType": "exact-basename",
+      "localPath": "public/assets/products/xil/IMG-XIL-智驾在环模块.png",
+      "matchType": "alias-candidate",
       "localDimensions": [
-        1800,
-        1013
+        1706,
+        922
       ],
-      "localBytes": 420922,
-      "localSha256": "b30a43e275e39e676965076f512ae7bc9b6165c931136ab6b86d4c5ee7391444",
+      "localBytes": 2250122,
+      "localSha256": "7f58ee2443f6d35d51477787ee92909c9ad525db45754359043a2ff3cfd1527a",
       "geometryDiffersFromSource": true,
-      "implementationUse": "requires-publication-confirmation"
+      "implementationUse": "requires-publication-confirmation",
+      "webDerivative": {
+        "path": "public/assets/products/web/xil-driving.webp",
+        "width": 1400,
+        "height": 757,
+        "bytes": 172758,
+        "sha256": "61da2fbc830e1fd7b32df40aca8f08d27cc0f5fa43c67d615a2253dc9defd459",
+        "derivedFrom": "public/assets/products/xil/IMG-XIL-智驾在环模块.png"
+      }
     },
     {
       "assetId": "XIL-CHS",
@@ -443,13 +451,24 @@
       "handling": "适合横图",
       "sourceRow": 21,
       "sourceRange": "'素材盘点'!A21:J21",
-      "localPath": null,
-      "matchType": "not-found",
-      "localDimensions": null,
-      "localBytes": null,
-      "localSha256": null,
-      "geometryDiffersFromSource": null,
-      "implementationUse": "requires-publication-confirmation"
+      "localPath": "public/assets/products/xil/IMG-XIL-底盘在环模块.png",
+      "matchType": "alias-candidate",
+      "localDimensions": [
+        1672,
+        941
+      ],
+      "localBytes": 1858888,
+      "localSha256": "beb3c40aea8bbc30587838296600fc6feb0c70ee7acef3d4df7759fa0a7903f5",
+      "geometryDiffersFromSource": true,
+      "implementationUse": "requires-publication-confirmation",
+      "webDerivative": {
+        "path": "public/assets/products/web/xil-chassis.webp",
+        "width": 1400,
+        "height": 788,
+        "bytes": 99016,
+        "sha256": "812df8b846d975b5ba47c684ff6aaa56ae23d6699878d80d9f46efe807bd819c",
+        "derivedFrom": "public/assets/products/xil/IMG-XIL-底盘在环模块.png"
+      }
     },
     {
       "assetId": "XIL-CPT",
@@ -464,13 +483,25 @@
       "handling": "禁止满屏放大，P1 补高清",
       "sourceRow": 22,
       "sourceRange": "'素材盘点'!A22:J22",
-      "localPath": null,
-      "matchType": "not-found",
-      "localDimensions": null,
-      "localBytes": null,
-      "localSha256": null,
-      "geometryDiffersFromSource": null,
-      "implementationUse": "requires-publication-confirmation"
+      "localPath": "public/assets/products/xil/IMG-XIL-座舱在环模块.png",
+      "matchType": "exact-basename",
+      "localDimensions": [
+        1448,
+        1086
+      ],
+      "localBytes": 1926817,
+      "localSha256": "4d142fae64354b6512b5700979e0c68ed3c71b0397dd61d77eae86a10933838e",
+      "geometryDiffersFromSource": true,
+      "implementationUse": "requires-publication-confirmation",
+      "webDerivative": {
+        "path": "public/assets/products/web/xil-cockpit.webp",
+        "width": 1400,
+        "height": 1050,
+        "bytes": 123530,
+        "sha256": "7a213dd08716db9b93ce2882e000793adf478c2020658ecb6552f2312f7bed4e",
+        "derivedFrom": "public/assets/products/xil/IMG-XIL-座舱在环模块.png"
+      },
+      "localObservation": "2026-10-26用户更新为1448×1086图片；源规格及历史待补项保留，当前网页按新版原图与派生图尺寸使用。"
     },
     {
       "assetId": "XIL-DIL",
@@ -485,13 +516,24 @@
       "handling": "4:3",
       "sourceRow": 23,
       "sourceRange": "'素材盘点'!A23:J23",
-      "localPath": null,
-      "matchType": "not-found",
-      "localDimensions": null,
-      "localBytes": null,
-      "localSha256": null,
-      "geometryDiffersFromSource": null,
-      "implementationUse": "requires-publication-confirmation"
+      "localPath": "public/assets/products/xil/IMG-XIL-驾驶员在环模块.png",
+      "matchType": "exact-basename",
+      "localDimensions": [
+        1448,
+        1086
+      ],
+      "localBytes": 1962244,
+      "localSha256": "c39067a7f742bf13627db8436e47cc5504a842e470c657772269746c4abfb2cc",
+      "geometryDiffersFromSource": true,
+      "implementationUse": "requires-publication-confirmation",
+      "webDerivative": {
+        "path": "public/assets/products/web/xil-driver.webp",
+        "width": 1400,
+        "height": 1050,
+        "bytes": 122624,
+        "sha256": "403e670085064a701d91027b1a76bc2ac9101bd5270ef0101881ca7cbe6afc2b",
+        "derivedFrom": "public/assets/products/xil/IMG-XIL-驾驶员在环模块.png"
+      }
     },
     {
       "assetId": "XIL-TD",
@@ -530,13 +572,21 @@
       "localPath": "public/assets/products/real-car/IMG-RC-车路云模块.png",
       "matchType": "exact-basename",
       "localDimensions": [
-        1800,
-        1085
+        1024,
+        1536
       ],
-      "localBytes": 1759293,
-      "localSha256": "622b8a278f45c9593f22576cf7a372c75219ffeccfd0ba65d9008133ed00abb4",
-      "geometryDiffersFromSource": true,
-      "implementationUse": "requires-publication-confirmation"
+      "localBytes": 1813609,
+      "localSha256": "94a19413cf4395647938fc2238fa847f78cb740c15f3d1f41969cc8cf92774fb",
+      "geometryDiffersFromSource": false,
+      "implementationUse": "requires-publication-confirmation",
+      "webDerivative": {
+        "path": "public/assets/products/web/real-car-v2x.webp",
+        "width": 768,
+        "height": 1152,
+        "bytes": 43972,
+        "sha256": "fd8a1d80affe8b5c40e3583561b9a1e0230e2e58bca0c0eccfe0ff437a6cfb5c",
+        "derivedFrom": "public/assets/products/real-car/IMG-RC-车路云模块.png"
+      }
     },
     {
       "assetId": "RC-ADS",
@@ -551,13 +601,25 @@
       "handling": "竖图",
       "sourceRow": 26,
       "sourceRange": "'素材盘点'!A26:J26",
-      "localPath": null,
-      "matchType": "not-found",
-      "localDimensions": null,
-      "localBytes": null,
-      "localSha256": null,
-      "geometryDiffersFromSource": null,
-      "implementationUse": "requires-publication-confirmation"
+      "localPath": "public/assets/products/real-car/IMG-RC-智能驾驶模块.png",
+      "matchType": "alias-candidate",
+      "localDimensions": [
+        1024,
+        1536
+      ],
+      "localBytes": 1735296,
+      "localSha256": "722332115e1b86c9eb3ddb5b6ad5e272886ee3253dec92d23d35048efff3dd2e",
+      "geometryDiffersFromSource": false,
+      "implementationUse": "requires-publication-confirmation",
+      "webDerivative": {
+        "path": "public/assets/products/web/real-car-driving.webp",
+        "width": 768,
+        "height": 1152,
+        "bytes": 38848,
+        "sha256": "bdd04cdff7841dfa40524fab93087941c15ba54944862904bf44ce3c4eb368f6",
+        "derivedFrom": "public/assets/products/real-car/IMG-RC-智能驾驶模块.png"
+      },
+      "localObservation": "2026-10-26用户更新的智能驾驶模块图片对应原台账自驾模块；仅据文件名及产品内容匹配，不表示与原件字节一致或已批准公开。"
     },
     {
       "assetId": "RC-VT",
@@ -572,13 +634,24 @@
       "handling": "竖图",
       "sourceRow": 27,
       "sourceRange": "'素材盘点'!A27:J27",
-      "localPath": null,
-      "matchType": "not-found",
-      "localDimensions": null,
-      "localBytes": null,
-      "localSha256": null,
-      "geometryDiffersFromSource": null,
-      "implementationUse": "requires-publication-confirmation"
+      "localPath": "public/assets/products/real-car/IMG-RC-虚拟测试模块.png",
+      "matchType": "exact-basename",
+      "localDimensions": [
+        1024,
+        1536
+      ],
+      "localBytes": 1919215,
+      "localSha256": "aafed903fc102130727f2ce180a9d7c600e1a0f870739e65abee071647bf2629",
+      "geometryDiffersFromSource": false,
+      "implementationUse": "requires-publication-confirmation",
+      "webDerivative": {
+        "path": "public/assets/products/web/real-car-virtual.webp",
+        "width": 768,
+        "height": 1152,
+        "bytes": 56446,
+        "sha256": "d18f8a8ca0047dcbd89572b94e42caa405889bcd4fac46e1445998bac4f75c81",
+        "derivedFrom": "public/assets/products/real-car/IMG-RC-虚拟测试模块.png"
+      }
     },
     {
       "assetId": "RC-DC",
@@ -596,13 +669,21 @@
       "localPath": "public/assets/products/real-car/IMG-RC-数据采集模块.png",
       "matchType": "exact-basename",
       "localDimensions": [
-        1800,
-        1127
+        1024,
+        1536
       ],
-      "localBytes": 1646104,
-      "localSha256": "c80fd5c4a1eb1e47a67cacaac0e7271e78958a0e482587009f2ee5e9482603be",
-      "geometryDiffersFromSource": true,
-      "implementationUse": "requires-publication-confirmation"
+      "localBytes": 1800745,
+      "localSha256": "427fdf0d51892f72f2e57847391f85518bf48b70724a5645ff491d97b660e6be",
+      "geometryDiffersFromSource": false,
+      "implementationUse": "requires-publication-confirmation",
+      "webDerivative": {
+        "path": "public/assets/products/web/real-car-data.webp",
+        "width": 768,
+        "height": 1152,
+        "bytes": 42618,
+        "sha256": "d4589a98d6dc38d489c48d0ec7524c2e50c526995759b843db93abb1a9589732",
+        "derivedFrom": "public/assets/products/real-car/IMG-RC-数据采集模块.png"
+      }
     },
     {
       "assetId": "RC-EM",
@@ -617,13 +698,24 @@
       "handling": "4:3",
       "sourceRow": 29,
       "sourceRange": "'素材盘点'!A29:J29",
-      "localPath": null,
-      "matchType": "not-found",
-      "localDimensions": null,
-      "localBytes": null,
-      "localSha256": null,
-      "geometryDiffersFromSource": null,
-      "implementationUse": "requires-publication-confirmation"
+      "localPath": "public/assets/products/real-car/IMG-RC-能量管理模块.png",
+      "matchType": "exact-basename",
+      "localDimensions": [
+        1024,
+        1536
+      ],
+      "localBytes": 1785463,
+      "localSha256": "7634f303523b875ff525dd2c80ee73089ebd48b102cda682785165d0eddaa4f6",
+      "geometryDiffersFromSource": true,
+      "implementationUse": "requires-publication-confirmation",
+      "webDerivative": {
+        "path": "public/assets/products/web/real-car-energy.webp",
+        "width": 768,
+        "height": 1152,
+        "bytes": 32066,
+        "sha256": "8e6a01e47e37675b29f57774a3d61911746f31f587dc384ff9e61f6b7802dfb3",
+        "derivedFrom": "public/assets/products/real-car/IMG-RC-能量管理模块.png"
+      }
     },
     {
       "assetId": "RC-CHS",
@@ -641,13 +733,21 @@
       "localPath": "public/assets/products/real-car/IMG-RC-智能底盘模块.png",
       "matchType": "exact-basename",
       "localDimensions": [
-        1800,
-        1348
+        1024,
+        1536
       ],
-      "localBytes": 2937831,
-      "localSha256": "41d8818bd915dc157abb12e60714350469650323e655fe909583b835a0d6ce2f",
-      "geometryDiffersFromSource": true,
-      "implementationUse": "requires-publication-confirmation"
+      "localBytes": 1979436,
+      "localSha256": "694080ddee4a4312f1ecfbfa69e014a7f8795c4f07d17fd7847bdced79f85807",
+      "geometryDiffersFromSource": false,
+      "implementationUse": "requires-publication-confirmation",
+      "webDerivative": {
+        "path": "public/assets/products/web/real-car-chassis.webp",
+        "width": 768,
+        "height": 1152,
+        "bytes": 49512,
+        "sha256": "1c0ed49e429c0f7828664a566fbd33f5c13695edf920aaf59d20e2a1265705a4",
+        "derivedFrom": "public/assets/products/real-car/IMG-RC-智能底盘模块.png"
+      }
     },
     {
       "assetId": "SRIF-XIL",

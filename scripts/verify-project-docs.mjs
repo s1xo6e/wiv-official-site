@@ -11,6 +11,24 @@ const readJson = async path => JSON.parse(await readFile(join(root, path), "utf8
 const counts = (items, field) => items.reduce((out, item) => ({ ...out, [item[field]]: (out[item[field]] ?? 0) + 1 }), {});
 const sameCounts = (a, b) => JSON.stringify(Object.entries(a).sort()) === JSON.stringify(Object.entries(b).sort());
 
+function webpDimensions(bytes) {
+  if (bytes.toString("ascii", 0, 4) !== "RIFF" || bytes.toString("ascii", 8, 12) !== "WEBP") return null;
+  for (let offset = 12; offset + 8 <= bytes.length;) {
+    const type = bytes.toString("ascii", offset, offset + 4);
+    const length = bytes.readUInt32LE(offset + 4);
+    const start = offset + 8;
+    if (start + length > bytes.length) return null;
+    if (type === "VP8 " && length >= 10) return [bytes.readUInt16LE(start + 6) & 0x3fff, bytes.readUInt16LE(start + 8) & 0x3fff];
+    if (type === "VP8X" && length >= 10) return [bytes.readUIntLE(start + 4, 3) + 1, bytes.readUIntLE(start + 7, 3) + 1];
+    if (type === "VP8L" && length >= 5 && bytes[start] === 0x2f) {
+      const dimensions = bytes.readUInt32LE(start + 1);
+      return [(dimensions & 0x3fff) + 1, ((dimensions >>> 14) & 0x3fff) + 1];
+    }
+    offset = start + length + (length % 2);
+  }
+  return null;
+}
+
 async function walk(path) {
   const files = [];
   for (const entry of await readdir(path, { withFileTypes: true })) {
@@ -26,8 +44,8 @@ try {
   const sources = await readJson("docs/reference-materials/source-register.json");
   for (const source of sources.sources) {
     const bytes = await readFile(join(root, source.archivedPath));
-    requireThat(digest(bytes) === source.sha256, `来源原件哈希不一致：${source.archivedPath}`);
-    requireThat(bytes.length === source.bytes, `来源原件大小不一致：${source.archivedPath}`);
+    requireThat(digest(bytes) === source.sha256, `来源归档哈希不一致：${source.archivedPath}`);
+    requireThat(bytes.length === source.bytes, `来源归档大小不一致：${source.archivedPath}`);
   }
 
   const registry = await readJson("docs/assets/asset-registry.json");
@@ -47,6 +65,7 @@ try {
   for (const asset of registry.assets) {
     if (!asset.localPath) {
       requireThat(asset.matchType === "not-found", `${asset.assetId} 缺少本地路径但未标缺失`);
+      requireThat(!asset.webDerivative, `${asset.assetId} 缺少原图却登记了网页派生图`);
       continue;
     }
     requireThat(asset.matchType !== "not-found", `${asset.assetId} 本地路径与缺失标记矛盾`);
@@ -57,6 +76,19 @@ try {
     requireThat(digest(bytes) === asset.localSha256, `${asset.assetId} 文件变化，需刷新台账哈希`);
     requireThat(bytes.length === asset.localBytes, `${asset.assetId} 文件大小变化，需刷新台账`);
     mapped.add(localPath);
+    if (asset.webDerivative) {
+      const derivative = asset.webDerivative;
+      const derivativePath = resolve(root, derivative.path);
+      const withinWeb = relative(join(root, "public/assets/products/web"), derivativePath);
+      requireThat(withinWeb && !withinWeb.startsWith("..") && extname(derivativePath) === ".webp", `${asset.assetId} 派生图路径不在产品网页素材目录`);
+      requireThat(derivative.derivedFrom === asset.localPath, `${asset.assetId} 派生图原图对应不一致`);
+      const webBytes = await readFile(derivativePath);
+      requireThat(digest(webBytes) === derivative.sha256, `${asset.assetId} 派生图变化，需刷新台账哈希`);
+      requireThat(webBytes.length === derivative.bytes, `${asset.assetId} 派生图大小变化，需刷新台账`);
+      const dimensions = webpDimensions(webBytes);
+      requireThat(dimensions && dimensions[0] === derivative.width && dimensions[1] === derivative.height, `${asset.assetId} 派生图实际尺寸与台账不一致`);
+      mapped.add(derivativePath);
+    }
   }
   const extensions = new Set([".png", ".jpg", ".jpeg", ".svg", ".webp", ".avif", ".gif", ".mp4", ".webm", ".mov", ".m4v"]);
   const media = (await walk(join(root, "public/assets"))).filter(path => extensions.has(extname(path).toLowerCase()));
@@ -83,7 +115,7 @@ try {
     errors.forEach(error => console.error(`- ${error}`));
     process.exitCode = 1;
   } else {
-    console.log(`文档检查通过：${sources.sources.length}份原件哈希、${registry.assets.length}项资产记录、${media.length}个媒体文件、${docs.length}份有效文档链接。`);
+    console.log(`文档检查通过：${sources.sources.length}份来源归档哈希、${registry.assets.length}项资产记录、${media.length}个媒体文件、${docs.length}份有效文档链接。`);
     console.log("此检查不证明素材已获公开授权，也不代替官网功能检查或 Git 远端同步。");
   }
 } catch (error) {

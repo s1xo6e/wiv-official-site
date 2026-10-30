@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { SiteHeader } from "@/components/site/site-header";
+import { SiteFooter } from "@/components/site/page-parts";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,7 +34,10 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <a className="skip-link" href="#main-content">跳到正文</a>
+        <SiteHeader />
+        <main id="main-content" tabIndex={-1}>{children}</main>
+        <SiteFooter />
       </body>
     </html>
   );

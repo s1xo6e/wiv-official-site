@@ -1,100 +1,108 @@
-# vinext-starter
+# 西部智车官网
 
-A clean full-stack starter running on
-[vinext](https://github.com/cloudflare/vinext), with optional Cloudflare D1 and
-Drizzle support.
+面向高校与科研院所的西部智车官网早期Demo，展示wivSPACE产品、研发测试方向与案例。当前已实现五个章节页、三条产品线的13个模块及11个产品详情页；内容与视觉仍有待验收项，尚未完成真实咨询和正式上线闭环。
 
-## Prerequisites
+**开源与接手入口：[GitHub仓库](https://github.com/s1xo6e/wiv-official-site)，默认分支 `main`。** 原交接链接 [`codex/project-handoff`](https://github.com/s1xo6e/wiv-official-site/tree/codex/project-handoff) 保留。更新日期为2026-10-30；代码采用MIT，图片与业务资料的许可范围见本文末尾。仓库公开、官网部署、业务验收分别处理。
 
-- Node.js `>=22.13.0`
+## 先把项目跑起来
 
-## Quick Start
+需要Node.js `>=22.13.0`和npm。公开仓库可直接查看/克隆，无需协作者邀请。当前命令按macOS/Linux/WSL编写，本轮在macOS验证；Windows原生命令行未验证。使用仓库的lockfile安装依赖：
 
 ```bash
-npm install
+git clone https://github.com/s1xo6e/wiv-official-site.git
+cd wiv-official-site
+npm ci
 npm run dev
-npm run build
 ```
 
-This starter does not use `wrangler.jsonc`.
+打开 [本地预览](http://localhost:3000/)，实际端口以启动日志为准。本地开发不需要业务 `.env` 或Cloudflare账号；保留仓库内 `.openai/hosting.json` 即可。不要将本机开发地址作为正式官网地址。
 
-## Included Shape
-
-- edit site code under `app/`
-- `.openai/hosting.json` declares optional Sites D1 and R2 bindings
-- `vite.config.ts` simulates declared bindings for local development
-- `db/schema.ts` starts intentionally empty
-- `examples/d1/` contains an optional D1 example surface
-- `drizzle.config.ts` supports local migration generation when needed
-
-## Workspace Auth Headers
-
-Signed-in visitors receive both `oai-authenticated-user-id` and `oai-authenticated-user-email`. Private Sites require every visitor to sign in; public Sites may also have anonymous visitors, for whom neither header is present.
-
-The user ID is stable for the same user on the same Site and different across Sites. Email and name are intended for display or contact purposes.
-
-SIWC-authenticated workspace sites may also receive
-`oai-authenticated-user-full-name` when the user's SIWC profile has a non-empty
-`name` claim. The full-name value is percent-encoded UTF-8 and is accompanied by
-`oai-authenticated-user-full-name-encoding: percent-encoded-utf-8`.
-
-Treat the full name as optional and fall back to email when it is absent:
-
-```tsx
-import { headers } from "next/headers";
-
-export default async function Home() {
-  const requestHeaders = await headers();
-  const userId = requestHeaders.get("oai-authenticated-user-id");
-  const email = requestHeaders.get("oai-authenticated-user-email");
-  const encodedFullName = requestHeaders.get("oai-authenticated-user-full-name");
-  const fullName =
-    encodedFullName &&
-    requestHeaders.get("oai-authenticated-user-full-name-encoding") ===
-      "percent-encoded-utf-8"
-      ? decodeURIComponent(encodedFullName)
-      : null;
-
-  const displayName = fullName ?? email;
-  // ...
-}
+```bash
+npm run verify       # 类型、Lint、文档/素材、构建、全部测试
+npm run dev:lan      # 同一局域网协作，使用日志中的Network地址
 ```
 
-## Optional Dispatch-Owned ChatGPT Sign-In
+检查生产构建时先运行 `npm run build`，再运行 `npm run start`。全部命令、环境解释和恢复步骤见 [技术设计](docs/TECH_DESIGN.md)。
 
-Import the ready-to-use helpers from `app/chatgpt-auth.ts` when the site needs
-optional or required ChatGPT sign-in:
+## 接手先读这三处
 
-- Use `getChatGPTUser()` for optional signed-in UI.
-- Use `requireChatGPTUser(returnTo)` for server-rendered pages that should send
-  anonymous visitors through Sign in with ChatGPT.
-- Use `chatGPTSignInPath(returnTo)` and `chatGPTSignOutPath(returnTo)` for
-  browser links or actions.
-- Pass a same-origin relative `returnTo` path for the destination after sign-in
-  or sign-out. The helper validates and safely encodes it.
-- Mark protected pages with `export const dynamic = "force-dynamic"` because
-  they depend on per-request identity headers.
+- [PRD](docs/PRD.md)：项目目标、当前产品口径、视觉要求、待确认材料、WIV任务及验收标准。需求和任务只在这里维护。
+- [技术设计](docs/TECH_DESIGN.md)：代码定位、路由/内容模型、配置、保留集成、验证、Git同步与独立恢复。实现和操作流程只在这里维护。
+- [AGENTS](AGENTS.md)：协作约束，人工或AI接手都应保留已有修改、尊重资料和发布边界。
 
-Dispatch owns `/signin-with-chatgpt`, `/signout-with-chatgpt`, `/callback`, the
-OAuth cookies, and identity header injection. Do not implement app routes for
-those reserved paths. Routes that do not import and call the helper remain
-anonymous-compatible.
+本README负责启动与交接摘要。`docs/reference-materials/`用于追溯依据，`docs/assets/asset-registry.json`维护素材对应关系，`docs/archive/`只用于历史恢复；不要把历史原件再当作另一套现行需求。
 
-SIWC establishes identity only; it does not prove workspace membership. Use the
-Sites hosting platform's access policy controls for workspace-wide restrictions,
-or enforce explicit server-side membership or allowlist checks.
+## 目前交付了什么
 
-Use SIWC for account pages, user-specific dashboards, saved records, and write
-actions tied to the current ChatGPT user. Leave public content anonymous.
+- 首页 `/`、产品 `/solutions`、案例 `/cases`、关于 `/about`、联系 `/contact` 均有独立页面，共用页头、页脚与当前章节标识。
+- 产品和案例有三列文字目录，手机有折叠菜单；一级标题可直接进入章节，支持键盘、Escape和减少动效。四个非首页章节共用公司外景图片首屏。
+- 产品按X-IL 5、REAL CAR 6、SRIF 2组织，共13模块。X-IL和REAL CAR共11个详情，覆盖产品定位、组成、研发测试、应用方向和同系列链接；SRIF保持总览。现行全称与后续要求以PRD为准。
+- 原产品图保留，11张WebP用于网页；来源、哈希、尺寸、派生关系和缺图项记录在资产台账。旧架构图、远程驾驶入口及无依据统计已撤下。
+- 已有类型/Lint/文档检查、SSR页面与资源测试、Git同步检查工具，继续使用现有Vinext + Vite + React和Sites/Worker集成。
 
-## Useful Commands
+## 接手后仍需完成什么
 
-- `npm run dev`: start local development
-- `npm run build`: verify the vinext build output
-- `npm test`: build the starter and verify its rendered loading skeleton
-- `npm run db:generate`: generate Drizzle migrations after schema changes
+以下事项没有因为交接或代码上传而完成，任务状态与详细验收集中在 [PRD第6节](docs/PRD.md#6-任务与验收)：
 
-## Learn More
+- **已实现、待验收**：导航目录、章节图片首屏、产品总览与11个详情的内容/视觉，以及真实手机触摸体验（WIV-002/005/006/012）。
+- **待用户确认**：首页定位与统计依据、真实电话/邮箱/公众号及接收人、四个案例的完整事实与官网正式展示口径、公司/团队能力口径（WIV-003/004/007/008）。
+- **尚未接通**：有效表单收件及完整咨询闭环；没有官网CMS、管理后台或登录业务（WIV-009）。
+- **上线前处理**：依赖安全评估、官网正式发布范围、托管账号权限、回退版本、咨询及跨设备回归（WIV-010）。本轮未部署网站，既有线上版本未核验。
 
-- [vinext Documentation](https://github.com/cloudflare/vinext)
-- [Drizzle D1 Guide](https://orm.drizzle.team/docs/get-started/d1-new)
+建议先由接手者启动并验收现有页面，再与内容负责人确认首页、联系渠道和案例，最后安排收件服务与上线。不要从历史规范直接复制待确认的联系方式、客户或性能主张。
+
+## 去哪里改
+
+```text
+app/                    五章路由、产品详情模板、全局布局与样式
+components/site/        导航、共用首屏/页脚和页面组件
+content/                产品/案例目录、详情正文与导航数据
+public/assets/          品牌、公司、产品及案例图片
+worker/、build/、.openai/  既有运行与Sites构建集成
+scripts/、tests/         文档/仓库检查与官网SSR测试
+docs/                   PRD、技术设计、来源与资产台账、历史归档
+```
+
+产品名称、简介和图在 `content/site-content.ts`，详情文案在 `content/product-details.ts`；其他定位和修改约定见技术设计。`db/`、`drizzle/`、`examples/d1/`及认证辅助文件属于未接入的预留能力，不是已完成的官网业务。
+
+## 资料交接边界
+
+GitHub包含源码、lockfile、主要文档、已归档参考资料、当前图片和资产台账。2026-10-30仓库持有人已明确确认现有文件、图片和Git历史均可在原仓库公开；此决定登记在资产台账的 `repositoryPublicationApproval`。台账中的源公开状态保留历史原文，官网上线与当前业务内容验收继续按PRD执行。
+
+以下内容需要原持有人另行提供或确认：
+
+- 约179MB的 `wivSPACE_8.19.pptx` 原件；仓库只有相关页文字摘录与来源哈希，本机来源路径不能供接手者下载。
+- 未找回的信息架构V1.1、完整素材包及近生产旧代码；找到后独立保存并比对。
+- 需要直接推送的接手者仍需GitHub协作者权限；Site/Cloudflare等托管账号、正式发布配置和联系收件服务另行移交。公开代码不自动转移账号或仓库所有权。
+- 忽略目录 `project-inputs/` 内的本地资料、真实 `.env` 与凭据（若有）。这些不随Git推送备份，不能写入普通文档或公开资源。
+
+## 最近核验与版本同步
+
+2026-10-30本机 `npm run verify` 通过：类型检查、Lint、四份来源/39项资产/34媒体核对、构建及全部13项测试通过。Lint为0错误、9条既有原生图片性能提醒；Vinext构建仍有部分路由静态分类为Unknown的提示，构建与实际SSR响应测试均通过。
+
+独立从GitHub克隆代码提交 `2c8dd0d` 后，`npm ci`、完整 `verify` 和 `repo:check` 均通过；本地生产预览的五章、X-IL/REAL CAR代表详情、中文路径原图、WebP、公司图和图标返回HTTP 200，未知详情返回404。之后仅补记交接验证与依赖审计结果，未改代码或lockfile。
+
+**已知依赖风险**：本轮全量 `npm audit` 报告27项（18 high、8 moderate、1 low）；`npm audit --omit=dev` 为0。Vinext、RSC及构建工具列在开发依赖中但参与构建/运行，后者不能代表上线安全结论。接手者应在WIV-010中评估受影响路径、修复与兼容性回归；本轮未升级依赖。
+
+本轮整理与开源没有新增页面设计；电脑/平板/模拟手机、键盘与减少动效沿用PRD中已注明日期的浏览器检查记录，未重新做真实手机验收。开源交付以默认 `main` 为入口，最终提交和实时同步状态可用下方命令核验。
+
+查看当前磁盘和远端是否一致：
+
+```bash
+git branch --show-current
+git rev-parse HEAD
+npm run repo:status
+npm run repo:check
+```
+
+`repo:status`只看本地；`repo:check`实时查询当前上游分支，要求工作区干净且远端SHA与HEAD一致，不自动提交或推送。它不检测编辑器未保存内容、忽略资料或外部服务。
+
+更换设备或正式接手前，按 [独立恢复流程](docs/TECH_DESIGN.md#6-git同步与独立恢复) 在新目录clone、比对SHA、安装依赖并运行检查，原项目副本继续保留。
+
+## 许可证与素材使用
+
+除下列非软件内容外，本仓库的软件源代码和配套开发说明采用 [MIT许可证](LICENSE)，允许修改、分发和商用，使用时保留版权和许可证声明。第三方依赖按各自许可证使用。
+
+MIT不覆盖 `public/assets/`、`docs/reference-materials/`、`docs/archive/`、`docs/assets/` 内的素材/资料/资产数据，也不覆盖公司和产品品牌标识、产品及案例业务文案。这些内容经持有人确认随仓库公开，保留原权利人的权利；公开查看/下载不自动授予独立商用或再许可权。复用网站时应替换品牌、业务文案和图片，或另行取得相应授权。
+
+`package.json` 的 `private: true` 只用于防止误发布npm包，不限制GitHub公开或MIT代码许可。

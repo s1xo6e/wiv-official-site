@@ -110,6 +110,15 @@ npm run verify       # typecheck → lint → docs:check → npm test
 
 文档改动通常运行 `docs:check` 和 `git diff --check`；本轮交接包含此前未上传的页面、图片与测试，因此执行完整 `verify` 及独立clone恢复。已知警告/最近结果记在README，任务验收只在PRD维护。
 
+依赖审计另行执行，不包含在 `verify` 中：
+
+```bash
+npm audit
+npm audit --omit=dev
+```
+
+2026-10-30锁定依赖的全量审计为27项（18 high、8 moderate、1 low），仅生产依赖筛选为0。直接受影响项包括Vinext、Vite、React Server Components、Cloudflare构建插件、Wrangler和Drizzle工具；开发依赖分类不等同于只影响开发机，需按实际打包/运行路径分析。后续以WIV-010跟踪评估与升级回归，不把 `npm audit fix --force` 作为接手启动步骤。审计数据库会更新，后续重新运行的数量可能变化。
+
 ## 6. Git同步与独立恢复
 
 当前交接分支为 `codex/project-handoff`，从 `codex/wiv-001-foundation` 携带全部既有工作建立。默认 `main` 仍为旧Demo，接手时必须显式选择交接分支。任务分支保存待验收成果，主分支合并、部署和仓库权限变更分别处理；本轮用户已授权提交和推送。

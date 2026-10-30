@@ -5,6 +5,14 @@
   "sourceSha256": "3d8077c790af5ed7400f48567e5a11c4fa69e85626d174232bc5b26e77590b6b",
   "sourcePathBase": "源工作簿中的 sourcePath/sourceAssetPath 相对于原 assets 根目录，不是当前 public/assets 的可访问路径。",
   "scope": "来源资产清单与当前 Demo 本地文件的对应快照；不等同于原资产已找回、原件内容一致或已获公开授权。",
+  "repositoryPublicationApproval": {
+    "status": "confirmed",
+    "confirmedOn": "2026-10-30",
+    "confirmedBy": "仓库持有人（本轮会话明确确认）",
+    "scope": "现有文件、图片和完整Git历史可在GitHub公开，包括此前源表待确认或不可公开的历史资料。",
+    "licenseScope": "软件源代码采用MIT；品牌、照片、产品及案例业务文案、参考原件和资产数据不自动纳入MIT授权。",
+    "sourceStatusPolicy": "sourcePublicStatus及其汇总保留原工作簿历史记录；本字段记录最新GitHub公开决定，官网正式发布仍按PRD验收。"
+  },
   "matchTypes": {
     "exact-basename": "仅源文件名与当前文件名完全一致；没有源文件字节，不能证明内容与原件一致。",
     "alias-candidate": "根据语义、比例或目视识别提出的改名候选；没有原件哈希，不视为已核验原件。",

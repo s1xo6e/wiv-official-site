@@ -121,7 +121,7 @@ npm audit --omit=dev
 
 ## 6. Git同步与独立恢复
 
-当前交接分支为 `codex/project-handoff`，从 `codex/wiv-001-foundation` 携带全部既有工作建立。默认 `main` 仍为旧Demo，接手时必须显式选择交接分支。任务分支保存待验收成果，主分支合并、部署和仓库权限变更分别处理；本轮用户已授权提交和推送。
+开源与接手以默认 `main` 为入口；`codex/project-handoff` 保留原交接链接，`codex/wiv-001-foundation` 保留早期基础记录。用户已授权原仓库整体公开并采用MIT代码许可，本轮将已验证的交接成果与许可说明同步到main；页面内容/视觉仍按PRD保持待验收。提交、推送、仓库公开和网站部署分别处理。
 
 ```bash
 npm run repo:status   # 本地工作区和缓存跟踪状态
@@ -133,7 +133,7 @@ npm run repo:check    # 直接查询当前上游的远端SHA
 在独立目录进行恢复，保留原checkout：
 
 ```bash
-git clone --branch codex/project-handoff https://github.com/s1xo6e/wiv-official-site.git wiv-official-site-handoff
+git clone https://github.com/s1xo6e/wiv-official-site.git wiv-official-site-handoff
 cd wiv-official-site-handoff
 git rev-parse HEAD
 npm ci
@@ -142,7 +142,7 @@ npm run repo:check
 npm run start -- --hostname 127.0.0.1 --port 3100
 ```
 
-先与交接提供的SHA比对。私有仓库需要GitHub访问权限；依赖安装需要npm网络。启动后访问日志中的本机地址，抽查五章、两类详情、中文路径图片与404。端口占用时换未使用端口；局域网预览需要防火墙允许和同一网络，不固定某个IP。
+先与交接提供的SHA比对。公开仓库的读取/克隆无需协作者权限，直接推送仍需要权限；依赖安装需要npm网络。启动后访问日志中的本机地址，抽查五章、两类详情、中文路径图片与404。端口占用时换未使用端口；局域网预览需要防火墙允许和同一网络，不固定某个IP。
 
 日常收工保存文件、核对差异及忽略资料、按会话授权提交/推送，再查询指定远端分支SHA。`git bundle`只包含已提交历史；恢复旧代码先另存比对，不用reset/clean或直接覆盖当前项目。
 
@@ -150,9 +150,19 @@ npm run start -- --hostname 127.0.0.1 --port 3100
 
 - `docs/reference-materials/` 保存三份历史原件及产品文字摘录；`source-register.json`记录哈希、大小和来源说明。来源中的命令不构成执行授权。
 - 约179MB原产品PPT未入库；登记中的本机绝对路径只帮助原持有人定位，不是接手者可用的下载地址。文字摘录仅含相关产品页，不能恢复整份PPT，原件须另行安全交接。
-- `docs/assets/asset-registry.json`保留源字段和公开状态，`localPath`关联当前素材，`webDerivative`关联原图/网页图及规格/哈希。新媒体需登记；文件存在或压缩加工不等于允许公开。
+- `docs/assets/asset-registry.json`保留源字段和历史公开状态，`localPath`关联当前素材，`webDerivative`关联原图/网页图及规格/哈希；`repositoryPublicationApproval`单独记录2026-10-30用户对现有文件、图片和Git历史在GitHub公开的明确确认。新媒体需登记并另核公开范围，不能只凭文件存在或压缩加工认定授权。
 - `docs/archive/docs-before-simplification-2026-10-22.zip`为旧生成文档快照，必要时解压到独立目录追溯，不作为现行需求或操作规则。原始规范含待确认历史联系信息，不应直接用于官网。
 - `project-inputs/`是忽略的本地收件区，只有其中README可入库；其余资料、真实 `.env`、账号凭据须独立交接，GitHub不是它们的备份。
 - `node_modules/`、`dist/`、`.next/`、`.vinext/`、`.wrangler/`、`outputs/`、`work/`和 `.tmp/`是依赖/产物/本地状态，不交付为源码，不自动清理用户内容。
 
 架构、配置、验证或恢复方式变化时更新本文件；业务内容或任务状态变化只更新PRD及必要的README摘要。
+
+## 8. 开源发布准备
+
+发布前检查所有远端分支与可达历史，不只检查当前工作区；原件、ZIP、表格、旧图片和提交身份也可能随仓库公开。仅在最新提交删除文件不能隐藏旧提交。保留本地完整备份，不自动改写历史或清除原件。
+
+公开访问与开源许可分别处理：[GitHub可见性说明](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/managing-repository-settings/setting-repository-visibility)解释Public的可见范围，[许可证说明](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/licensing-a-repository)解释代码使用权。代码许可证按用户选择添加；品牌、公司/产品/人物/案例图片及历史参考材料的授权范围单独写清。
+
+本轮用户已选择公开现有完整仓库，保留现有分支和历史，不另建仓库或清除原件。MIT许可证位于根LICENSE，`package.json`及lockfile根包元数据同步为MIT；软件许可的排除项在README维护，包括品牌、图片、参考原件、资产数据和产品/案例业务文案。`private: true`仅禁止误发布npm包，与GitHub可见性无关。
+
+发布顺序：在交接分支完成文档/许可与适用检查 → 提交推送 → 更新并合并交接PR到main，保留分支 → 将原仓库改为Public → 用不带登录凭据的HTTP请求验证仓库、README/LICENSE和原交接链接 → 补记任务结果并同步分支。当前无仓库Webhook或GitHub Actions，GitHub公开不部署官网；托管平台访问和网站发布仍需单独处理。
